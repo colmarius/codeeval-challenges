@@ -21,8 +21,6 @@ def rspec_run_challenge(number)
   end
 
   system('rspec', spec_file)
-
-  # File.delete(spec_file)
 end
 
 (1..200).each do |number|
