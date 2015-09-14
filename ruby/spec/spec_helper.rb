@@ -1,4 +1,8 @@
+require_relative './support/helper_methods'
+
 RSpec.configure do |config|
+  config.include(HelperMethods)
+
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end

@@ -1,0 +1,39 @@
+def spec_challenge_file_content(number)
+%Q{require 'spec_helper'
+
+RSpec.describe "Challenge #{number}" do
+  it {
+    command = "ruby ./lib/#{number}.rb ./spec/challenges/inputs/#{number}"
+    output = capture_output(command)
+    expected_output = File.read("./spec/challenges/outputs/#{number}")
+    expect(output).to eq(expected_output)
+  }
+end
+}
+end
+
+def rspec_run_challenge(number)
+  spec_file_content = spec_challenge_file_content(number)
+  spec_file = "./spec/challenges/#{number}_spec.rb"
+
+  File.open(spec_file, 'w') do |file|
+    file.puts spec_file_content
+  end
+
+  system('rspec', spec_file)
+
+  # File.delete(spec_file)
+end
+
+(1..200).each do |number|
+
+  desc "Challenge #{number} - https://www.codeeval.com/open_challenges/#{number}/submit/"
+  task "challenge:#{number}" do
+    challenge_file = "./lib/#{number}.rb"
+    unless File.exist?(challenge_file)
+      puts "Challenge #{number} not found"
+      next
+    end
+    rspec_run_challenge(number)
+  end
+end
